@@ -1,10 +1,15 @@
 package com.capgemini.employeepayrollapp.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-public class EmployeePayrollDTO {
+import lombok.ToString;
+
+public @ToString class EmployeePayrollDTO {
 	@NotEmpty(message="employee name cannot be null")
 	@Pattern(regexp = "^[A-Z]{1}[A-Za-z\\s]{2,}$", message = "Employee name invalid")
 	public String name;
@@ -16,8 +21,14 @@ public class EmployeePayrollDTO {
 		this.salary = salary;
 	}
 
-	@Override
-	public String toString() {
-		return "name: " + name + " , salary: " + salary;
-	}
+	public String gender;
+
+	public LocalDate startDate;
+
+	public String note;
+
+	public String profilePic;
+
+	public List<String> department;
+
 }
