@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +23,15 @@ import com.capgemini.employeepayrollapp.dto.ResponseDTO;
 import com.capgemini.employeepayrollapp.model.EmployeePayrollData;
 import com.capgemini.employeepayrollapp.services.IEmployeePayrollService;
 
+
+
 @RestController
+
+
+@CrossOrigin(origins = "http://127.0.0.1:5502", maxAge = 3600)
 @RequestMapping("/employeepayrollservice")
 public class EmployeePayrollController {
+
 	@Autowired
 	private IEmployeePayrollService employeePayrollService;
 
@@ -43,12 +50,20 @@ public class EmployeePayrollController {
 		ResponseDTO respDTO = new ResponseDTO("Get call for ID successful ", empData);
 		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping("/department/{department}")
+	public ResponseEntity<ResponseDTO> getEmployeePayrollData(@PathVariable("department") String department) {
+		List<EmployeePayrollData> empDataList = null;
+		empDataList = employeePayrollService.getEmployeesByDepartment(department);
+		ResponseDTO respDTO = new ResponseDTO("Get call for ID successful ", empDataList);
+		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
+	}
 
 	@PostMapping("/post")
-	public ResponseEntity<ResponseDTO> addEmployeePayrollData( @Valid @RequestBody EmployeePayrollDTO employeeDTO) {
+	public ResponseEntity<ResponseDTO> addEmployeePayrollData(@Valid @RequestBody EmployeePayrollDTO employeeDTO) {
 		EmployeePayrollData empData = null;
 		empData = employeePayrollService.createEmployeePayrollData(employeeDTO);
-		ResponseDTO respDTO = new ResponseDTO("Get call for ID successful ", empData);
+		ResponseDTO respDTO = new ResponseDTO("Post call for ID successful ", empData);
 		return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
 	}
 
